@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Document
+    body
+        include includes/navbar
+        h1 Products
+        a(href="/products/add") Add product
+        table(border="1")
+            thead
+                th ID
+                th Name
+                th Price
+                th Action
+            tbody
+                each product in products
+                    tr
+                        td #{product.id}
+                        td #{product.name}
+                        td #{product.price}
+                        td
+                            a(href=`/products/${product.id}`) See details
