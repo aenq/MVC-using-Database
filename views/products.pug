@@ -13,13 +13,15 @@ html(lang="en")
             thead
                 th ID
                 th Name
-                th Price
+                th Description
+                th Quantity
                 th Action
             tbody
                 each product in products
                     tr
                         td #{product.id}
                         td #{product.name}
-                        td #{product.price}
-                        td
+                        td #{product.description}
+                        td #{product.quantity}
                             a(href=`/products/${product.id}`) See details
+                            a(href=`/products/edit/${product.id}`) Edit 

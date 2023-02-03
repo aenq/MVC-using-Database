@@ -1,37 +1,73 @@
-const products = require('./../products.json');
+const pool = require('../config/connection');
+// const products = require('./../products.json');
 
 class Product {
-    constructor(id, name, price) {
+    constructor(id, name, description, quantity) {
         this.id = id;
         this.name = name;
-        this.price = price;
+        this.description = description;
+        this.quantity = quantity;
     }
 
     static findAllProduct() {
-        const result = products.map((element) => {
-            return new Product(element.id, element.name, element.price);
-        });
-        return result;
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT id, name, description, quantity FROM products')
+                .then((rows) => {
+                    const result = rows.map(element.id, element.name, element.description, element.quantity);
+                    resolve(result);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        })
     }
 
     static findProductById(id) {
-        const result = products.find((element) => {
-            return element.id == id;
-        });
-        return new Product(result.id, result.name, result.price);
+        return new Promise((resolve, reject) => {
+            pool.query('SELECT id, name, description, quantity FROM products WHERE id = $1')
+            .then((rows) => {
+                if (rows.length) {
+                    throw {name : "ProductNotFound"};
+                }
+    
+                const result = new Product(rows[0].id,rows[0].name,rows[0].description,rows[0].quantity,)
+                resolve(result);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+        }); 
     }
 
-    static addProduct(nama, price) {
-        const id = !products.length
-        ? 1
-        : (products[products.length - 1].id +1);
-        products.push({
-          id : id,
-          name : req.body.name,
-          price: req.body.price
-        });
+    static addProduct(name, description, quantity) {
+        return new Promise((resolve, reject) => {
+            pool.query(`INSERT INTO products (name, description, quantity) VALUES ($1, $2, $3)`, 
+            {name, description, quantity})
+            .then((rows) => {
+                if (rows.length) {
+                    throw {name : "ProductNotFound"};
+                }
+    
+                const result = new Product(rows[0].id,rows[0].name,rows[0].description,rows[0].quantity,)
+                resolve(result);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+        })
     }
     
+    static renderEditProduct () {
+        return new Promise ((resolve, reject) => {
+            pool.query (``)
+            .then((rows) = {
+
+            })
+            .catch((err) => {
+
+            })
+        })
+    }
 }
 
 module.exports = Product;
